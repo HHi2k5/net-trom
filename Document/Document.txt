@@ -1,0 +1,34 @@
+1. Yêu cầu thiết kế hệ thống
+Hệ thống Web Truyện Online được xây dựng nhằm cung cấp nền tảng đọc truyện trực tuyến cho người dùng và hỗ trợ quản lý nội dung truyện một cách hiệu quả.
+Hệ thống cần đáp ứng các yêu cầu sau:
+•	Cho phép người dùng đăng ký, đăng nhập và sử dụng hệ thống
+
+•	Hiển thị danh sách truyện và nội dung các chương truyện
+
+•	Cho phép người dùng bình luận truyện
+
+•	Hỗ trợ lưu chương đang đọc thông qua chức năng bookmark
+
+•	Quản lý truyện, chương truyện, thể loại và người dùng đối với quản trị viên
+Hệ thống phải đảm bảo hoạt động ổn định, dễ sử dụng và có khả năng mở rộng trong tương lai.
+
+2. Actors & Personas
+•	Visitor (khách): xem danh sách truyện/chương, đọc truyện, xem bình luận (chế độ read-only).
+•	User (đăng nhập): đọc toàn bộ, đánh dấu chương, bình luận, quản lý profile cơ bản.
+•	Admin: CRUD truyện, chương, danh mục; xoá bình luận vi phạm; duyệt/ẩn truyện.
+
+3. Yêu cầu chức năng (Functional)
+Danh sách chức năng chính (map với CSDL)
+•	Đăng ký/Đăng nhập (bảng users), JWT auth.
+•	Quản lý truyện (stories):
+o	Tạo/sửa/xoá (admin).
+o	Gán thể loại (bảng story_categories).
+•	Quản lý chương (chapters):
+o	Tạo/sửa/xoá (admin), unique (story_id, chapter_number).
+•	Danh mục (categories): CRUD (admin).
+•	Bình luận (comments): tạo/xoá comment (user; admin có thể xoá bất kỳ).
+•	Đánh dấu chương (chapter_bookmarks): tạo/xoá (unique per user+chapter).
+•	Xem truyện, tìm kiếm, lọc theo thể loại, trạng thái, tác giả.
+•	Phân trang, sắp xếp danh sách truyện/chương.
+•	Phân quyền theo role.
+
