@@ -15,7 +15,7 @@ Hệ thống phải đảm bảo hoạt động ổn định, dễ sử dụng v
 2. Actors & Personas
 •	Visitor (khách): xem danh sách truyện/chương, đọc truyện, xem bình luận (chế độ read-only).
 •	User (đăng nhập): đọc toàn bộ, đánh dấu chương, bình luận, quản lý profile cơ bản.
-•	Admin: CRUD truyện, chương, danh mục; xoá bình luận vi phạm; duyệt/ẩn truyện.
+•	Admin: CRUD truyện, chương, danh mục; xoá bình luận vi phạm, xóa user, đổi tên user.
 
 3. Yêu cầu chức năng (Functional)
 Danh sách chức năng chính (map với CSDL)
