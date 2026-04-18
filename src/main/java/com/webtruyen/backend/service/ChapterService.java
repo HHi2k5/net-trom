@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +58,12 @@ public class ChapterService {
         chapterRequest.setStory(story);
         log.info("Creating chapter with {} pages for story ID: {}", 
                  chapterRequest.getPages() != null ? chapterRequest.getPages().size() : 0, storyId);
-        return chapterRepository.save(chapterRequest);
+        Chapter savedChapter = chapterRepository.save(chapterRequest);
+        
+        story.setUpdatedAt(LocalDateTime.now());
+        storyRepository.save(story);
+        
+        return savedChapter;
     }
 
     public Chapter updateChapter(Long id, Chapter chapterDetails) {
@@ -67,11 +73,25 @@ public class ChapterService {
         if(chapterDetails.getPages() != null) chapter.setPages(chapterDetails.getPages());
         log.info("Updating chapter ID: {} with {} pages", 
                  id, chapter.getPages() != null ? chapter.getPages().size() : 0);
-        return chapterRepository.save(chapter);
+        Chapter savedChapter = chapterRepository.save(chapter);
+        
+        Story story = chapter.getStory();
+        if (story != null) {
+            story.setUpdatedAt(LocalDateTime.now());
+            storyRepository.save(story);
+        }
+        
+        return savedChapter;
     }
 
     public void deleteChapter(Long id) {
         Chapter chapter = getChapterById(id);
+        Story story = chapter.getStory();
         chapterRepository.delete(chapter);
+        
+        if (story != null) {
+            story.setUpdatedAt(LocalDateTime.now());
+            storyRepository.save(story);
+        }
     }
 }

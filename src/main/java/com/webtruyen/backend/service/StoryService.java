@@ -23,6 +23,10 @@ public class StoryService {
     public PagedResponse<Story> getStoriesPaginated(String q, Long categoryId, String status, String author,
                                                     int page, int pageSize, String sortBy, String order) {
 
+        if (q != null && q.trim().isEmpty()) q = null;
+        if (status != null && status.trim().isEmpty()) status = null;
+        if (author != null && author.trim().isEmpty()) author = null;
+
         Sort.Direction direction = "asc".equalsIgnoreCase(order) ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by(direction, sortBy));
 

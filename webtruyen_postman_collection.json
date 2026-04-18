@@ -86,13 +86,28 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/users",
+							"raw": "{{baseUrl}}/api/users?page=1&pageSize=10&q=",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "q",
+									"value": "",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -114,14 +129,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/users/1",
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"1"
+								"{{userId}}"
 							]
 						}
 					},
@@ -144,7 +159,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"John Updated\",\n  \"email\": \"john_updated@example.com\",\n  \"oldPassword\": \"password123\",\n  \"password\": \"newpassword123\"\n}",
+							"raw": "{\n  \"name\": \"John Updated\",\n  \"email\": \"john_updated@example.com\",\n  \"role\": \"user\",\n  \"oldPassword\": \"password123\",\n  \"password\": \"newpassword123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -152,14 +167,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/users/1",
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"1"
+								"{{userId}}"
 							]
 						}
 					},
@@ -181,14 +196,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/users/1",
+							"raw": "{{baseUrl}}/api/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"1"
+								"{{userId}}"
 							]
 						}
 					},
@@ -205,7 +220,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/stories?page=1&pageSize=12&sortBy=updatedAt&order=desc",
+							"raw": "{{baseUrl}}/api/stories?page=1&pageSize=12&sortBy=updatedAt&order=desc&q=&categoryId=&status=&author=",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -239,6 +254,16 @@
 									"key": "categoryId",
 									"value": "",
 									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "",
+									"disabled": true
 								}
 							]
 						}
@@ -251,14 +276,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1"
+								"{{storyId}}"
 							]
 						}
 					},
@@ -346,14 +371,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1"
+								"{{storyId}}"
 							]
 						}
 					},
@@ -365,14 +390,14 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1/views",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}/views",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1",
+								"{{storyId}}",
 								"views"
 							]
 						}
@@ -395,14 +420,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1"
+								"{{storyId}}"
 							]
 						}
 					},
@@ -419,14 +444,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1/chapters?page=1&pageSize=20&order=asc",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}/chapters?page=1&pageSize=20&order=asc",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1",
+								"{{storyId}}",
 								"chapters"
 							],
 							"query": [
@@ -453,16 +478,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1/chapters/1",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}/chapters/{{chapterNumber}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1",
+								"{{storyId}}",
 								"chapters",
-								"1"
+								"{{chapterNumber}}"
 							]
 						}
 					},
@@ -493,14 +518,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1/chapters",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}/chapters",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1",
+								"{{storyId}}",
 								"chapters"
 							]
 						}
@@ -532,16 +557,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1/chapters/1",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}/chapters/{{chapterId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1",
+								"{{storyId}}",
 								"chapters",
-								"1"
+								"{{chapterId}}"
 							]
 						}
 					},
@@ -563,16 +588,16 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/stories/1/chapters/1",
+							"raw": "{{baseUrl}}/api/stories/{{storyId}}/chapters/{{chapterId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"stories",
-								"1",
+								"{{storyId}}",
 								"chapters",
-								"1"
+								"{{chapterId}}"
 							]
 						}
 					},
@@ -607,14 +632,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/categories/1",
+							"raw": "{{baseUrl}}/api/categories/{{categoryId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"categories",
-								"1"
+								"{{categoryId}}"
 							]
 						}
 					},
@@ -702,14 +727,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/categories/1",
+							"raw": "{{baseUrl}}/api/categories/{{categoryId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"categories",
-								"1"
+								"{{categoryId}}"
 							]
 						}
 					},
@@ -731,14 +756,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/categories/1",
+							"raw": "{{baseUrl}}/api/categories/{{categoryId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"categories",
-								"1"
+								"{{categoryId}}"
 							]
 						}
 					},
@@ -755,7 +780,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/comments?storyId=1",
+							"raw": "{{baseUrl}}/api/comments?storyId=1&chapterId=&page=1&pageSize=20",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -766,7 +791,21 @@
 							"query": [
 								{
 									"key": "storyId",
+									"value": "1",
+									"disabled": false
+								},
+								{
+									"key": "chapterId",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
 									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "20"
 								}
 							]
 						}
@@ -790,7 +829,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": 1,\n  \"storyId\": 1,\n  \"content\": \"Great story!\"\n}",
+							"raw": "{\n  \"userId\": 1,\n  \"storyId\": 1,\n  \"chapterId\": null,\n  \"parentId\": null,\n  \"content\": \"Great story!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -826,14 +865,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/comments/1",
+							"raw": "{{baseUrl}}/api/comments/{{commentId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"comments",
-								"1"
+								"{{commentId}}"
 							]
 						}
 					},
@@ -860,7 +899,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/bookmarks/user/1",
+							"raw": "{{baseUrl}}/api/bookmarks/user/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -868,7 +907,7 @@
 								"api",
 								"bookmarks",
 								"user",
-								"1"
+								"{{userId}}"
 							]
 						}
 					},
@@ -890,7 +929,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/bookmarks/toggle?userId=1&chapterId=1",
+							"raw": "{{baseUrl}}/api/bookmarks/toggle?userId={{userId}}&chapterId={{chapterId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -902,11 +941,11 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "1"
+									"value": "{{userId}}"
 								},
 								{
 									"key": "chapterId",
-									"value": "1"
+									"value": "{{chapterId}}"
 								}
 							]
 						}
@@ -929,7 +968,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/bookmarks/check?userId=1&chapterId=1",
+							"raw": "{{baseUrl}}/api/bookmarks/check?userId={{userId}}&chapterId={{chapterId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -941,11 +980,11 @@
 							"query": [
 								{
 									"key": "userId",
-									"value": "1"
+									"value": "{{userId}}"
 								},
 								{
 									"key": "chapterId",
-									"value": "1"
+									"value": "{{chapterId}}"
 								}
 							]
 						}
@@ -987,6 +1026,36 @@
 		{
 			"key": "token",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "storyId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "chapterId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "chapterNumber",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "commentId",
+			"value": "1",
 			"type": "string"
 		}
 	]

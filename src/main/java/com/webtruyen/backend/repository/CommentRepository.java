@@ -4,11 +4,12 @@ import com.webtruyen.backend.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByStoryIdOrderByCreatedAtAsc(Long storyId);
-    List<Comment> findByChapterIdOrderByCreatedAtAsc(Long chapterId);
-    List<Comment> findAllByOrderByCreatedAtDesc();
+    Page<Comment> findByStoryIdOrderByCreatedAtAsc(Long storyId, Pageable pageable);
+    Page<Comment> findByChapterIdOrderByCreatedAtAsc(Long chapterId, Pageable pageable);
+    Page<Comment> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

@@ -6,11 +6,15 @@ import com.webtruyen.backend.model.User;
 import com.webtruyen.backend.repository.CommentRepository;
 import com.webtruyen.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import com.webtruyen.backend.dto.PagedResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,16 +26,32 @@ public class CommentController {
     private final UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<List<Comment>> getComments(
+    public ResponseEntity<PagedResponse<Comment>> getComments(
             @RequestParam(required = false) Long storyId,
-            @RequestParam(required = false) Long chapterId) {
+            @RequestParam(required = false) Long chapterId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int pageSize) {
         
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Comment> commentPage;
+
         if (chapterId != null) {
-            return ResponseEntity.ok(commentRepository.findByChapterIdOrderByCreatedAtAsc(chapterId));
+            commentPage = commentRepository.findByChapterIdOrderByCreatedAtAsc(chapterId, pageable);
         } else if (storyId != null) {
-            return ResponseEntity.ok(commentRepository.findByStoryIdOrderByCreatedAtAsc(storyId));
+            commentPage = commentRepository.findByStoryIdOrderByCreatedAtAsc(storyId, pageable);
+        } else {
+            // General admin view, show newest first
+            pageable = PageRequest.of(page - 1, pageSize, Sort.by("createdAt").descending());
+            commentPage = commentRepository.findAllByOrderByCreatedAtDesc(pageable);
         }
-        return ResponseEntity.ok(commentRepository.findAllByOrderByCreatedAtDesc());
+        
+        PagedResponse<Comment> response = new PagedResponse<>(
+                commentPage.getContent(),
+                commentPage.getTotalElements(),
+                page,
+                pageSize
+        );
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping

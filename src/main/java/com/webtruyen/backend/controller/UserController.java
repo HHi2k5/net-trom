@@ -6,8 +6,13 @@ import com.webtruyen.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.webtruyen.backend.dto.PagedResponse;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,8 +23,27 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+    public ResponseEntity<PagedResponse<User>> getAllUsers(
+            @RequestParam(required = false) String q,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("id").descending());
+        Page<User> userPage;
+        
+        if (q != null && !q.isEmpty()) {
+            userPage = userRepository.findByNameContainingIgnoreCase(q, pageable);
+        } else {
+            userPage = userRepository.findAll(pageable);
+        }
+        
+        PagedResponse<User> response = new PagedResponse<>(
+                userPage.getContent(),
+                userPage.getTotalElements(),
+                page,
+                pageSize
+        );
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
