@@ -33,6 +33,7 @@ public class ChapterController {
     }
 
     @PostMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Chapter> createChapter(
             @PathVariable Long storyId,
             @RequestBody Chapter chapterRequest) {
@@ -41,6 +42,7 @@ public class ChapterController {
     }
 
     @PutMapping("/{chapterId}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Chapter> updateChapter(
             @PathVariable Long storyId,
             @PathVariable Long chapterId,
@@ -49,6 +51,7 @@ public class ChapterController {
     }
 
     @DeleteMapping("/{chapterId}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteChapter(
             @PathVariable Long storyId,
             @PathVariable Long chapterId) {

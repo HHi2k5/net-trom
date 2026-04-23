@@ -15,14 +15,15 @@ import java.util.List;
 import com.webtruyen.backend.dto.PagedResponse;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping
+    @GetMapping("/admin/users")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PagedResponse<User>> getAllUsers(
             @RequestParam(required = false) String q,
             @RequestParam(defaultValue = "1") int page,
@@ -46,14 +47,14 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserUpdateRequest updates) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
@@ -78,7 +79,8 @@ public class UserController {
         return ResponseEntity.ok(userRepository.save(user));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/users/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);

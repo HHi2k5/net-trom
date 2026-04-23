@@ -40,12 +40,14 @@ public class StoryController {
     }
 
     @PostMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Story> createStory(@RequestBody Story story) {
         Story createdStory = storyService.createStory(story);
         return new ResponseEntity<>(createdStory, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Story> updateStory(@PathVariable Long id, @RequestBody Story storyDetails) {
         return ResponseEntity.ok(storyService.updateStory(id, storyDetails));
     }
@@ -57,6 +59,7 @@ public class StoryController {
     }
 
     @DeleteMapping("/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteStory(@PathVariable Long id) {
         storyService.deleteStory(id);
         return ResponseEntity.noContent().build();

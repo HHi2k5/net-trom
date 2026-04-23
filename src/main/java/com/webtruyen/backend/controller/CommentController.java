@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    @GetMapping
+    @GetMapping("/comments")
     public ResponseEntity<PagedResponse<Comment>> getComments(
             @RequestParam(required = false) Long storyId,
             @RequestParam(required = false) Long chapterId,
@@ -40,9 +40,8 @@ public class CommentController {
         } else if (storyId != null) {
             commentPage = commentRepository.findByStoryIdOrderByCreatedAtAsc(storyId, pageable);
         } else {
-            // General admin view, show newest first
-            pageable = PageRequest.of(page - 1, pageSize, Sort.by("createdAt").descending());
-            commentPage = commentRepository.findAllByOrderByCreatedAtDesc(pageable);
+            // General view without story/chapter ID is only for admins
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         
         PagedResponse<Comment> response = new PagedResponse<>(
@@ -54,7 +53,25 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping
+    @GetMapping("/admin/comments")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PagedResponse<Comment>> getAllCommentsForAdmin(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int pageSize) {
+        
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("createdAt").descending());
+        Page<Comment> commentPage = commentRepository.findAllByOrderByCreatedAtDesc(pageable);
+        
+        PagedResponse<Comment> response = new PagedResponse<>(
+                commentPage.getContent(),
+                commentPage.getTotalElements(),
+                page,
+                pageSize
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/comments")
     public ResponseEntity<Comment> createComment(@RequestBody CommentRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -70,7 +87,8 @@ public class CommentController {
         return new ResponseEntity<>(commentRepository.save(comment), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/comments/{id}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteComment(@PathVariable Long id) {
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isPresent()) {
